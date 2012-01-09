@@ -1,11 +1,12 @@
 #!/usr/bin/python
 import mmh3
 import glob
-import base64
+import binascii
 import sys
 import logging
+import hashlib
 
-blockSize = 1024*1024
+blockSize = 1024*1024*10
 
 
 class LocalBlock:
@@ -16,8 +17,8 @@ class LocalBlock:
 
 def blockHash(block):
     hashBytes = mmh3.hash_bytes(block)
-    return base64.urlsafe_b64encode(hashBytes)
-    
+    return binascii.hexlify(hashBytes)
+
 
 def hashesFor(f):
     data = f.read(blockSize)
@@ -29,6 +30,7 @@ def publishBlock(blockInfo):
 
 
 def main():
+    logging.basicConfig(level=logging.INFO, format='%(message)s')
     knownBlocks = {}
     #Load database
     for fileName in sys.argv[1:]:
@@ -37,14 +39,18 @@ def main():
         idx = 0
         for blockHash in hashesFor(of):
             knownBlocks[blockHash] = LocalBlock(fileName, idx)
+            logging.info("Loaded %s", blockHash)
             idx += 1
     logging.info("Loaded %i blocks", len(knownBlocks))
     
+    
     #Respond to requests
     for requestFile in glob.glob("request/*"):
-        if requestFile in knownBlocks:
-            publishBlock(knownBocks[requestFile])
-    
+        logging.info("Found request: %s", requestFile)
+        requestHash = requestFile.split(".", 1)[0]
+        if requestHash in knownBlocks:
+            publishBlock(knownBlocks[requestHash])
+    logging.info("EXIT")
     #cleanRequests()
     #cleanResponses()
     
