@@ -5,6 +5,10 @@ import binascii
 import sys
 import logging
 import hashlib
+import simplejson as json
+import random
+import os
+import sys
 
 blockSize = 1024*1024*10
 
@@ -27,6 +31,34 @@ def hashesFor(f):
 def publishBlock(blockInfo):
     logging.log("publishing: %s", blockInfo)
     
+
+def loadUserPreferences():
+    fname = os.path.expanduser("~/.boxchannel.json")
+    if not os.path.exists(fname):
+        return json.loads("{}")
+    maximumPreferencesFileSize = 1024*1024
+    return json.loads(file(fname).read(maximumPreferencesFileSize))
+
+def initUserPreferences():
+    prefs = loadUserPreferences()
+    needToSave = False
+    if 'id' not in prefs:
+        prefs['id'] = str(random.random())[2:]
+        needToSave = True
+        print "New user id: ", prefs['id']
+    if 'indexDirectory' not in prefs:
+        prefs['indexDirectory'] = os.path.expanduser("~/Dropbox/boxchannel/")
+        if not os.path.exists(prefs['indexDirectory']):
+            os.makedirs(prefs['indexDirectory'])
+        needToSave = True
+    if needToSave:    
+        saveUserPreferences(prefs)
+    return prefs    
+
+def saveUserPreferences(prefs):
+    fname = os.path.expanduser("~/.boxchannel.json")
+    file(fname, 'w').write(json.dumps(prefs))
+
 
 
 def main():
