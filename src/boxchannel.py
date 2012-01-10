@@ -52,9 +52,15 @@ def initUserPreferences():
             os.makedirs(prefs['indexDirectory'])
         needToSave = True
     if 'requestDirectory' not in prefs:
-        prefs['requestDirectory'] = os.path.expanduser("~/Dropbox/boxchannel/")
+        prefs['requestDirectory'] = os.path.expanduser("~/Dropbox/boxchannel/request")
         if not os.path.exists(prefs['requestDirectory']):
             os.makedirs(prefs['requestDirectory'])
+        needToSave = True
+    
+    if 'responseDirectory' not in prefs:
+        prefs['responseDirectory'] = os.path.expanduser("~/Dropbox/boxchannel/response")
+        if not os.path.exists(prefs['responseDirectory']):
+            os.makedirs(prefs['responseDirectory'])
         needToSave = True
     
     if needToSave:    
