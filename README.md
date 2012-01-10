@@ -5,6 +5,8 @@ Introduction
 ============
 The idea of boxchannel is to have a network shared directory where two boxchannel agents can set up a communication channel with each other. Allowing you to share large amounts of data over a fixed size shared directory.
 
+Project goal: Point a GUI to a Dropbox directory you share with friend and have it manage downloads and uploads while keeping the total directory size under (say) 200MB.
+
 Current scripts
 ====================
 
@@ -14,7 +16,7 @@ index.py
 --------
 Add files to your index. Index files are currently in `~/Dropbox/boxchannel/_userid_.index`
 Each line is a absolute path followed by each of the block hashes. The _userid_ is a random
-number generated if there is no `~/.boxchannel.json` file with an id in it.
+number generated if there is no `~/.boxchannel/prefs.json` file with an id in it.
 
 boxchannel.py
 -------------
