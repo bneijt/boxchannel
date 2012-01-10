@@ -49,7 +49,8 @@ TODO list
 *   Add `--append` support to index.py to allow you to write `find . -type f -print0|xargs -0 -P1 -n1000 index.py --append`
 *   Add `--help` support to all scripts
 *   Add data security (hash before storage copying a block, delete blocks of the right size with the wrong hash)
-
+*   Add a GUI to show progress of downloads, etc.
+*   Combine all scripts into a single cool kind of program
 
 
 
