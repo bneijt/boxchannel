@@ -37,7 +37,7 @@ def loadUserPreferences():
     if not os.path.exists(fname):
         return json.loads("{}")
     maximumPreferencesFileSize = 1024*1024
-    return json.loads(file(fname).read(maximumPreferencesFileSize))
+    return json.loads(file(fname, 'r').read(maximumPreferencesFileSize))
 
 def initUserPreferences():
     prefs = loadUserPreferences()
@@ -51,13 +51,21 @@ def initUserPreferences():
         if not os.path.exists(prefs['indexDirectory']):
             os.makedirs(prefs['indexDirectory'])
         needToSave = True
+    if 'requestDirectory' not in prefs:
+        prefs['requestDirectory'] = os.path.expanduser("~/Dropbox/boxchannel/")
+        if not os.path.exists(prefs['requestDirectory']):
+            os.makedirs(prefs['requestDirectory'])
+        needToSave = True
+    
     if needToSave:    
         saveUserPreferences(prefs)
     return prefs    
 
 def saveUserPreferences(prefs):
     fname = os.path.expanduser("~/.boxchannel.json")
-    file(fname, 'w').write(json.dumps(prefs))
+    pf = file(fname, 'w')
+    pf.write(json.dumps(prefs))
+    pf.close()
 
 
 

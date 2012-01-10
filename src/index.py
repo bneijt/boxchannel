@@ -12,6 +12,7 @@ def main():
         print "Indexing ", fileName
         newFile = file(fileName, 'r')
         indexFile.write(os.path.abspath(fileName))
+        indexFile.write(" ||")
         for blockHash in boxchannel.hashesFor(newFile):
             indexFile.write(" %s" % blockHash)
         indexFile.write("\n")
