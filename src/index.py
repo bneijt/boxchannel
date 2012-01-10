@@ -9,7 +9,7 @@ def main():
     indexFileName = os.path.join(prefs['indexDirectory'], "%s.index" % prefs['id'])
     indexFile = file(indexFileName, 'w')
     for fileName in sys.argv[1:]:
-        print "Indexing ", fileName
+        print "Indexing", fileName
         newFile = file(fileName, 'r')
         indexFile.write(os.path.abspath(fileName))
         indexFile.write(" ||")

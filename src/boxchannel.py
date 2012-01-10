@@ -11,7 +11,7 @@ import os
 import sys
 
 blockSize = 1024*1024*10
-
+preferencesFileName = os.path.expanduser("~/.boxchannel/preferences.json")
 
 class LocalBlock:
     def __init__(self, filename, index):
@@ -33,7 +33,7 @@ def publishBlock(blockInfo):
     
 
 def loadUserPreferences():
-    fname = os.path.expanduser("~/.boxchannel.json")
+    fname = preferencesFileName
     if not os.path.exists(fname):
         return json.loads("{}")
     maximumPreferencesFileSize = 1024*1024
@@ -56,11 +56,15 @@ def initUserPreferences():
         if not os.path.exists(prefs['requestDirectory']):
             os.makedirs(prefs['requestDirectory'])
         needToSave = True
-    
     if 'responseDirectory' not in prefs:
         prefs['responseDirectory'] = os.path.expanduser("~/Dropbox/boxchannel/response")
         if not os.path.exists(prefs['responseDirectory']):
             os.makedirs(prefs['responseDirectory'])
+        needToSave = True
+    if 'stageDirectory' not in prefs:
+        prefs['stageDirectory'] = os.path.expanduser("~/.boxchannel/stage")
+        if not os.path.exists(prefs['stageDirectory']):
+            os.makedirs(prefs['stageDirectory'])
         needToSave = True
     
     if needToSave:    
@@ -68,7 +72,7 @@ def initUserPreferences():
     return prefs    
 
 def saveUserPreferences(prefs):
-    fname = os.path.expanduser("~/.boxchannel.json")
+    fname = preferencesFileName
     pf = file(fname, 'w')
     pf.write(json.dumps(prefs))
     pf.close()
