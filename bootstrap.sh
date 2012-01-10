@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e #Exit on any sub-process failure
 cd "`dirname "$0"`"
 
 if ! test -d bin; then
@@ -8,7 +9,7 @@ fi
 . bin/activate
 echo "Installing mmh3"
 bin/pip install mmh3
-
+bin/pip install simplejson
 
 echo "Done"
 echo "Start development by running"
