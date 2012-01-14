@@ -4,6 +4,7 @@ import sys
 import glob
 import os
 import datetime
+
 #Stage directory is:
 #   filename/block.idx
 def main(args):
@@ -30,7 +31,7 @@ def main(args):
                     file(stageFile, 'w').write(block)
             if removeResponse:
                 print "Removing", responseName
-                os.unlink(responseName)
+                #os.unlink(responseName)
     
     #See if we can patch up a file from the staged blocks, patch it up and clean the directory
     for stageFileDirectory in glob.glob(os.path.join(stageDirectory, "*")):
@@ -64,6 +65,18 @@ def main(args):
                     outputFile.write(block)
                 os.unlink(blockFileName)
             print "Written:", outputFileName
+
+    #Clean up routine
+    responses = boxchannel.filesInDirectory(responseDirectory)
+    if len(responses) > boxchannel.maximumNumResponses:
+        print "More then", boxchannel.maximumNumResponses, "requests, cleaning up"
+        responses.sort(key=lambda x: os.path.getctime(x))
+        while len(responses) > boxchannel.maximumNumResponses:
+            target = responses.pop(0)
+            print "Removing", target
+            os.unlink(target)
+
+
     
 if __name__ == "__main__":
     main()

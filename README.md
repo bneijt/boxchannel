@@ -32,7 +32,7 @@ Given a filename, search all index databases for that file and when found, reque
 
 boostrap.sh
 -----------
-Use `virtualenv` to create a python environment and install mmh3.
+Use `virtualenv` to create a python environment and install boxchannel in it. You also need the virtualenv to use other scripts.
 
 stage.py
 --------
@@ -41,8 +41,6 @@ Collect all responses which match with a request we did earlier (empty files in 
 TODO list
 =========
 
-*   Add clean-up routines
-*   Remove timestamp from request block file name and just use sys ctime
 *   Refactor boxchannel into a real kind of library
 *   Add `--append` support to index.py to allow you to write `find . -type f -print0|xargs -0 -P1 -n1000 index.py --append`
 *   Add `--help` support to all scripts

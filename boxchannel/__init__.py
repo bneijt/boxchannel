@@ -10,14 +10,18 @@ import random
 import os
 import sys
 
-blockSize = 1024*1024*10
+blockSize = 1024*1024
+maximumNumRequests = 1024
+maximumNumResponses = 200
 preferencesFileName = os.path.expanduser("~/.boxchannel/preferences.json")
+
+
 
 class LocalBlock:
     def __init__(self, filename, index):
         self._index = index
         self._filename = filename
-
+        
 
 def blockHash(block):
     hashBytes = mmh3.hash_bytes(block)
@@ -32,7 +36,6 @@ def hashesFor(f):
 
 def publishBlock(blockInfo):
     logging.log("publishing: %s", blockInfo)
-    
 
 def loadUserPreferences():
     fname = preferencesFileName
@@ -41,7 +44,10 @@ def loadUserPreferences():
     maximumPreferencesFileSize = 1024*1024
     return json.loads(file(fname, 'r').read(maximumPreferencesFileSize))
 
-
+def filesInDirectory(directoryName):
+    files = [os.path.join(directoryName, name) for name in os.listdir(directoryName)]
+    return filter(os.path.isfile, files)
+    
 def indexedFiles(directoryStringOrOpenFile):
     if isinstance(directoryStringOrOpenFile, basestring):
         for indexFileName in glob.glob(os.path.join(directoryStringOrOpenFile, "*.index")):

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 . bin/activate
-dd if=/dev/urandom count=100 of=/tmp/boxchannel.test
+dd if=/dev/urandom count=20 bs=1M of=/tmp/boxchannel.test
 python boxc index /tmp/boxchannel.test
 python boxc request boxchannel.test
 python boxc request

@@ -26,6 +26,17 @@ def main(args):
         return
     requestedFile = args.pop()
     
+    #Clean up routine
+    requests = boxchannel.filesInDirectory(requestDirectory)
+    if len(requests) > boxchannel.maximumNumRequests:
+        print "More then", boxchannel.maximumNumRequests, "requests, cleaning up"
+        requests.sort(key=lambda x: os.path.getctime(x))
+        while len(requests) > boxchannel.maximumNumRequests:
+            target = requests.pop(0)
+            print "Removing", target
+            os.unlink(target)
+            
+    
     print "Looking for:", requestedFile  
     requestMade = False  
     for pathAndHashes in boxchannel.indexedFiles(indexFileDirectory):
