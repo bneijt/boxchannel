@@ -7,9 +7,8 @@ if ! test -d bin; then
     virtualenv  --no-site-packages .
 fi
 . bin/activate
-echo "Installing mmh3"
-bin/pip install mmh3
-bin/pip install simplejson
+echo "Installing in virtual env"
+python setup.py install
 
 echo "Done"
 echo "Start development by running"

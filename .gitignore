@@ -3,3 +3,4 @@ lib
 bin
 include
 local
+boxchannel.egg-info
