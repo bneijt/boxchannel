@@ -41,8 +41,6 @@ Collect all responses which match with a request we did earlier (empty files in 
 TODO list
 =========
 
-*   Create stage.py
-*   Add clean up scripts
 *   Add unit tests
 *   Remove timestamp from request block file name and just use sys ctime
 *   Refactor boxchannel into a real kind of library
