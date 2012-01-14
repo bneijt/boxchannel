@@ -14,7 +14,7 @@ setup(
     author = "A. Bram Neijt",
     author_email = "bneijt@gmail.com",
     description = ("An attempt to communicate blocks over a fixed size shared directory."),
-    license = "GPLv3",
+    license = "GPL3",
     url = "https://github.com/bneijt/boxchannel",
     packages=['boxchannel', 'tests'],
     long_description=read('README.md'),
