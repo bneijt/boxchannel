@@ -7,8 +7,6 @@ import datetime
 
 def main():
 
-    requestedFile = sys.argv[1]
-    print "Looking for:", requestedFile    
     #Load or generate user preferences
     prefs = boxchannel.initUserPreferences()
     
@@ -17,25 +15,31 @@ def main():
     requestDirectory = prefs['requestDirectory']
     stageDirectory = prefs['stageDirectory']
 
-    for indexFileName in glob.glob(os.path.join(indexFileDirectory, "*.index")):
-        indexFile = file(indexFileName, 'r')
-        for line in indexFile.xreadlines():
-            (fullPath, hashes) = line.split(" || ", 1)
-            if os.path.basename(fullPath) == requestedFile:
-                #Found the file
-                print "Requesting:", fullPath
-                timestamp = datetime.datetime.now().strftime("%Y%m%d%H")
-                
-                os.mkdir(os.path.join(stageDirectory, requestedFile))
-                for (blockIndex, h) in enumerate(hashes.split(" ")):
-                    h = h.strip() #Remove newline if it is on the line
-                    stageName = os.path.join(stageDirectory, requestedFile, "%s.%s" %(h, blockIndex))
-                    requestName = os.path.join(requestDirectory, "%s.%s" %(h, timestamp))
-                    print "Creating file:", requestName
-                    file(requestName, 'w').close()
-                    file(stageName, 'w').close()
-            #else:
-            #    print "Not requesting", fullPath
+    if not os.path.exists(prefs['requestDirectory']):
+        os.makedirs(prefs['requestDirectory'])
+
+    if len(sys.argv) < 2:
+        print "No file requested, listing all files indexed"
+        for (fullPath, hashes) in boxchannel.indexedFiles(indexFileDirectory):
+            print os.path.basename(fullPath)
+        return
+    requestedFile = sys.argv[1]
+    
+    print "Looking for:", requestedFile    
+    for (fullPath, hashes) in boxchannel.indexedFiles(indexFileDirectory):
+        if os.path.basename(fullPath) == requestedFile:
+            #Found the file
+            print "Requesting:", fullPath
+            timestamp = datetime.datetime.now().strftime("%Y%m%d%H")
+            
+            os.mkdir(os.path.join(stageDirectory, requestedFile))
+            for (blockIndex, h) in enumerate(hashes.split(" ")):
+                h = h.strip() #Remove newline if it is on the line
+                stageName = os.path.join(stageDirectory, requestedFile, "%s.%s" %(h, blockIndex))
+                requestName = os.path.join(requestDirectory, "%s.%s" %(h, timestamp))
+                print "Creating file:", requestName
+                file(requestName, 'w').close()
+                file(stageName, 'w').close()
 
 if __name__ == "__main__":
     main()

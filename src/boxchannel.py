@@ -39,6 +39,13 @@ def loadUserPreferences():
     maximumPreferencesFileSize = 1024*1024
     return json.loads(file(fname, 'r').read(maximumPreferencesFileSize))
 
+def indexedFiles(indexFileDirectory):
+    for indexFileName in glob.glob(os.path.join(indexFileDirectory, "*.index")):
+        indexFile = file(indexFileName, 'r')
+        for line in indexFile.xreadlines():
+            yield line.split(" || ", 1)
+
+
 def initUserPreferences():
     prefs = loadUserPreferences()
     needToSave = False
@@ -48,23 +55,15 @@ def initUserPreferences():
         print "New user id: ", prefs['id']
     if 'indexDirectory' not in prefs:
         prefs['indexDirectory'] = os.path.expanduser("~/Dropbox/boxchannel/")
-        if not os.path.exists(prefs['indexDirectory']):
-            os.makedirs(prefs['indexDirectory'])
         needToSave = True
     if 'requestDirectory' not in prefs:
         prefs['requestDirectory'] = os.path.expanduser("~/Dropbox/boxchannel/request")
-        if not os.path.exists(prefs['requestDirectory']):
-            os.makedirs(prefs['requestDirectory'])
         needToSave = True
     if 'responseDirectory' not in prefs:
         prefs['responseDirectory'] = os.path.expanduser("~/Dropbox/boxchannel/response")
-        if not os.path.exists(prefs['responseDirectory']):
-            os.makedirs(prefs['responseDirectory'])
         needToSave = True
     if 'stageDirectory' not in prefs:
         prefs['stageDirectory'] = os.path.expanduser("~/.boxchannel/stage")
-        if not os.path.exists(prefs['stageDirectory']):
-            os.makedirs(prefs['stageDirectory'])
         needToSave = True
     
     if needToSave:    
