@@ -2,6 +2,7 @@
 import boxchannel
 import os
 import sys
+import simplejson
 
 def main(args):
     #Load file and store hashes in index file
@@ -14,10 +15,12 @@ def main(args):
     for fileName in args:
         print "Indexing", fileName
         newFile = file(fileName, 'r')
-        indexFile.write(os.path.abspath(fileName))
-        indexFile.write(" ||")
+        lineElements = [os.path.abspath(fileName)]
         for blockHash in boxchannel.hashesFor(newFile):
-            indexFile.write(" %s" % blockHash)
+            lineElements.append(blockHash)
+        line = simplejson.dumps(lineElements)
+        assert "\n" not in line
+        indexFile.write(line)
         indexFile.write("\n")
     indexFile.close()
 

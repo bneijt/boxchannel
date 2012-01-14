@@ -23,7 +23,6 @@ def blockHash(block):
     hashBytes = mmh3.hash_bytes(block)
     return binascii.hexlify(hashBytes)
 
-
 def hashesFor(f):
     while True:
         data = f.read(blockSize)
@@ -42,12 +41,18 @@ def loadUserPreferences():
     maximumPreferencesFileSize = 1024*1024
     return json.loads(file(fname, 'r').read(maximumPreferencesFileSize))
 
-def indexedFiles(indexFileDirectory):
-    for indexFileName in glob.glob(os.path.join(indexFileDirectory, "*.index")):
-        indexFile = file(indexFileName, 'r')
-        for line in indexFile.xreadlines():
-            yield line.split(" || ", 1)
 
+def indexedFiles(directoryStringOrOpenFile):
+    if isinstance(directoryStringOrOpenFile, basestring):
+        for indexFileName in glob.glob(os.path.join(directoryStringOrOpenFile, "*.index")):
+            indexFile = file(indexFileName, 'r')
+            for line in indexFile.xreadlines():
+                yield json.loads(line)
+    else:
+        indexFile = directoryStringOrOpenFile
+        for line in indexFile.xreadlines():
+            yield json.loads(line)
+        
 
 def initUserPreferences():
     prefs = loadUserPreferences()

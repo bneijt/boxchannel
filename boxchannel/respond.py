@@ -24,9 +24,10 @@ def main(args):
         requests[requestedHash] = True
     
     #See if we have that block in our index
-    for line in indexFile.xreadlines():
-        (fullPath, hashes) = line.split(" || ", 1)
-        for (blockIdx, h) in enumerate(hashes.split(" ")):
+    for pathAndHashes in boxchannel.indexedFiles(indexFile):
+        fullPath = pathAndHashes.pop(0)
+        hashes = pathAndHashes
+        for (blockIdx, h) in enumerate(hashes):
             h = h.strip() #Remove newline if it is on the line
             if h in requests:
                 print "Responding to", h
