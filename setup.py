@@ -18,6 +18,9 @@ setup(
     url = "https://github.com/bneijt/boxchannel",
     packages=['boxchannel', 'tests'],
     long_description=read('README.md'),
+    scripts=[
+        'boxc',
+    ],
     install_requires=[
         'mmh3',
         'simplejson',

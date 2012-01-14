@@ -41,7 +41,7 @@ Collect all responses which match with a request we did earlier (empty files in 
 TODO list
 =========
 
-*   Add unit tests
+*   Add clean-up routines
 *   Remove timestamp from request block file name and just use sys ctime
 *   Refactor boxchannel into a real kind of library
 *   Add `--append` support to index.py to allow you to write `find . -type f -print0|xargs -0 -P1 -n1000 index.py --append`

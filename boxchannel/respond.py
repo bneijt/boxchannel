@@ -5,7 +5,7 @@ import glob
 import os
 import datetime
 
-def main():
+def main(args):
     prefs = boxchannel.loadUserPreferences()
     requestDirectory = prefs['requestDirectory']
     indexFileDirectory = prefs['indexDirectory']
@@ -20,8 +20,8 @@ def main():
     #Load all requests in memory
     requests = {}
     for request in glob.glob(os.path.join(requestDirectory, "*")):
-        (requestedHash, timestamp) = os.path.basename(request).split(".")
-        requests[requestedHash] = timestamp
+        requestedHash = os.path.basename(request)
+        requests[requestedHash] = True
     
     #See if we have that block in our index
     for line in indexFile.xreadlines():
@@ -40,7 +40,7 @@ def main():
                 rf = file(responseFile, 'w')
                 rf.write(block)
                 rf.close()
-                for requestName in glob.glob(os.path.join(requestDirectory, h + ".*")):
+                for requestName in glob.glob(os.path.join(requestDirectory, h)):
                     print "Removing", requestName
                     os.unlink(requestName)
     

@@ -6,7 +6,7 @@ import os
 import datetime
 #Stage directory is:
 #   filename/block.idx
-def main():
+def main(args):
     #Move all of our requests from the response directory into the stage directory
     prefs = boxchannel.loadUserPreferences()
     downloadDirectory = prefs['downloadDirectory']

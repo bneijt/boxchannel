@@ -1,0 +1,43 @@
+#!/usr/bin/python
+import boxchannel
+import optparse
+import sys
+
+
+def main(args):
+    parser = optparse.OptionParser(usage='%prog <index|request|respond|stage>')
+    parser.set_defaults(
+            version = False,
+            )
+    parser.add_option('-V', '--version', action='store_true', dest='version', help='show version and exit')
+    (options, args) = parser.parse_args()
+    if options.version:
+        print "0.0.1"
+        return 0
+
+    if len(args) < 1:
+        parser.error('You need at last one argument to this program.')
+        return 0
+    
+    command = args.pop(0)
+    if not command in ['index', 'request', 'respond', 'stage']:
+        parser.error('Unknown command: %s' % command)
+        return 1
+    
+    if command == 'index':
+        import boxchannel.index
+        return boxchannel.index.main(args)
+    elif command == 'request':
+        import boxchannel.request
+        return boxchannel.request.main(args)
+    elif command == 'respond':
+        import boxchannel.respond
+        return boxchannel.respond.main(args)
+    elif command == 'stage':
+        import boxchannel.stage
+        return boxchannel.stage.main(args)
+    
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
