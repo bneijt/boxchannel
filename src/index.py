@@ -6,6 +6,9 @@ import sys
 def main():
     #Load file and store hashes in index file
     prefs = boxchannel.initUserPreferences()
+    if not os.path.exists(prefs['indexDirectory']):
+        os.makedirs(prefs['indexDirectory'])
+
     indexFileName = os.path.join(prefs['indexDirectory'], "%s.index" % prefs['id'])
     indexFile = file(indexFileName, 'w')
     for fileName in sys.argv[1:]:

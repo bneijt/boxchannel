@@ -10,6 +10,9 @@ def main():
     requestDirectory = prefs['requestDirectory']
     indexFileDirectory = prefs['indexDirectory']
     responseDirectory = prefs['responseDirectory']
+
+    if not os.path.exists(prefs['responseDirectory']):
+        os.makedirs(prefs['responseDirectory'])
     
     indexFileName = os.path.join(indexFileDirectory, "%s.index" % prefs['id'])
     indexFile = file(indexFileName, 'r')

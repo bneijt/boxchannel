@@ -31,11 +31,13 @@ def main():
             #Found the file
             print "Requesting:", fullPath
             timestamp = datetime.datetime.now().strftime("%Y%m%d%H")
+            requestStageDirectory = os.path.join(stageDirectory, requestedFile)
+            if not os.path.exists(requestStageDirectory):
+                os.mkdir(requestStageDirectory)
             
-            os.mkdir(os.path.join(stageDirectory, requestedFile))
             for (blockIndex, h) in enumerate(hashes.split(" ")):
                 h = h.strip() #Remove newline if it is on the line
-                stageName = os.path.join(stageDirectory, requestedFile, "%s.%s" %(h, blockIndex))
+                stageName = os.path.join(requestStageDirectory, "%s.%s" %(h, blockIndex))
                 requestName = os.path.join(requestDirectory, "%s.%s" %(h, timestamp))
                 print "Creating file:", requestName
                 file(requestName, 'w').close()

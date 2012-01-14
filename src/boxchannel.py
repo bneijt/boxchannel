@@ -25,8 +25,11 @@ def blockHash(block):
 
 
 def hashesFor(f):
-    data = f.read(blockSize)
-    yield blockHash(data)
+    while True:
+        data = f.read(blockSize)
+        if len(data) == 0:
+            break
+        yield blockHash(data)
 
 def publishBlock(blockInfo):
     logging.log("publishing: %s", blockInfo)
@@ -64,6 +67,9 @@ def initUserPreferences():
         needToSave = True
     if 'stageDirectory' not in prefs:
         prefs['stageDirectory'] = os.path.expanduser("~/.boxchannel/stage")
+        needToSave = True
+    if 'downloadDirectory' not in prefs:
+        prefs['downloadDirectory'] = os.path.expanduser("~/Downloads")
         needToSave = True
     
     if needToSave:    
